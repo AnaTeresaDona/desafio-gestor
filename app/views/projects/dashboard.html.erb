@@ -1,0 +1,95 @@
+<h1 class="text-center text-decoration-underline">Panel de proyectos</h1>
+
+<h1 class="text-center text-decoration-underline mt-2">Gestor de Proyectos</h1>
+
+<form action="<%= projects_dashboard_path%>">
+        <select name="state" class="form-select">
+            <option value="">Todos</option>
+            <option value="propuesta">Propuesta</option>
+            <option value="progreso">Progreso</option>
+            <option value="terminado">Terminado</option>
+        </select>
+        <input class="btn btn-dark text-light my-4 translate-midle" type="submit" value="Buscar">
+</form>
+
+<div class="table-responsive">
+    <table class="table">
+            <tr>
+                <th> Nombre </th>
+                <th> Descripción </th>
+                <th> Fecha de inicio </th>
+                <th> Fecha de término </th>
+                <th> Estado </th>
+            </tr>
+
+        <% @projects.each do |project|%>
+            <tr>
+                <td><%= project.name %></td>
+                <td><%= project.description %></td>
+                <td><%= project.starting_date%></td>
+                <td><%= project.do_date%></td>
+                <td><%= project.state %></td>
+            </tr>
+        <%end%>
+    </table>
+</div>
+
+
+<h2 class="text-center text-decoration-underline mt-5">Crear proyecto nuevo </h2>
+<form id="create_proyect" method="get" action="<%= projects_create_path%>">
+
+    <div class="mb-3">
+        <label for="form_name" class="form-label">Nombre</label>
+        <input name="name" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="form_descripcion" class="form-label">Descripción</label>
+        <input name="description" class="form-control" type="textarea">
+    </div>
+
+        <div class="mb-3">
+            <label for="form_starting_date" class="form-label" type="date" >Fecha de Inicio</label>
+            <input name="starting_date" class="datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" >
+        </div>
+
+        <div class="mb-3">
+            <label for="form_do_date" class="form-label" type="date" >Fecha de Término</label>
+            <input name="do_date" class="datepicker" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" >
+        </div>
+
+    <div class="mb-3">
+        <label for="form_state" class="form-label">Estado</label>
+        <select name="state" class="form-select">
+            <option selected>Seleccione una de las opciones</option>
+            <option value="propuesta">Propuesta</option>
+            <option value="progreso">Progreso</option>
+            <option value="terminado">Terminado</option>
+        </select>
+    </div>
+    
+        <input class="btn btn-dark text-light" type="submit" value="Enviar">
+    
+</form>
+<div class="container mt-2">
+    <% if @project.errors.any?%>
+        <div id="error_explanation">
+            <h4>Su proyecto no pudo salvarse, por favor, vuelva a intentarlo </h4>
+        
+            <h5>
+                <%= pluralize(@project.errors.count, "error")%>
+                <p>prohibited this project from being saved: </p>
+            </h5>
+        
+            <ul>
+                <% @project.errors.full_messages.each do |msg|%>
+                <li> <%=msg%> </li>
+                <%end%>
+            </ul>
+        </div>
+        
+    <%else%>
+        <h4>Su proyecto fue ingresado con éxito</h4>
+    <%end%>
+</div>
+
